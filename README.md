@@ -26,10 +26,12 @@ Basic Usage Instructions
 To get a local copy of this project up and running on your machine, follow these simple steps.
 
 Prerequisites 
+
 	Python 3.x installed on your system
 	git command line tool
 
-Installation 
+Installation
+
 	For collaborators: Clone this repository directly.
 	For public users: First, fork this repository to your own Github account, then clone your fork.
 		git clone [repository-URL]
@@ -42,36 +44,48 @@ Installation
 		python main.py
 
 
+
 Agile Planning
 
 
 Team members and Roles
 
-Joanna Rios - Technical Lead & System Architect:
+Joanna Rios - Technical Lead & System Architect
+
 Responsibilities: Drives the technical vision, sets up the Git/GitHub repository and development environment, designs the overall software architecture, creates UML diagrams, and ensures code quality. The “swiss army knife” responsible for the technical documentation and ensuring deadlines are met.
 
-Alicia Cortina - UI/UX Specialist/Prototyper & Feature Developer:
+Alicia Cortina - UI/UX Specialist/Prototyper & Feature Developer
+
 Responsibilities: Focuses on the user interface design (Tkinter layouts, widgets, user flow), implements specific features like the "Activities/Task Schedule Manager" and "Bulletin Board," ensuring a good user experience.
 
-Emma Pacheco - Backend Logic & Data Specialist / Tester:
+Emma Pacheco - Backend Logic & Data Specialist / Tester
+
 Responsibilities: Develops the underlying logic for features (e.g., notification systems, data handling for events/schedules), manages data storage (e.g., SQLite database i), sets up and runs testing procedures, and might focus on aspects like the "Event Calendar" data integration or "Emergency Contacts" logic.
+
 
 
 Sprint Schedule
  
 Sprint 1
+
 	Start Date: July 24
 	End Date: July 30
 	Goal: Set up repository, define features, and draft documentation.
+
 Sprint 2
+
 	Start Date: July 31
 	End Date: August 6
 	Goal: Implement Create and Read tasks.
+
 Sprint 3
+
 	Start Date: August 7
 	End Date: August 13
 	Goal: Implement Update and Delete tasks.
+
 Sprint 4
+
 	Start Date: August 14
 	End Date: August 20
 	Goal: Add notifications and emergency contacts feature.
