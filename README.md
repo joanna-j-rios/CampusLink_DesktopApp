@@ -83,9 +83,9 @@ Sprint 1
 	Start Date: July 24
 	End Date: July 30
 	Activities: 
- 		Set up repository
-   		Define features
-     	Draft documentation
+		Set up a repository (and any other channels of communication Google Docs, Discord, Whatsapp, etc.)
+		Define features (user stories)
+		Draft documentation (User Manual - README & Technical Doc.)
 
 Sprint 2
 
