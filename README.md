@@ -102,7 +102,7 @@ Sprint 3
 	Start Date: August 7
 	End Date: August 13
 	Activities: 
- 		High Priotity UI Implementation- Implement basic UI for all priority 1 user stories
+ 		High Priority UI Implementation- Implement basic UI for all priority 1 user stories
 		Basic Data Display- For at least one section (ex: Emergency Contacts) display the data to show the interface is “running”
 		Database Connection (initial)- Setup the initial SQLite database connection (without full CRUD yet)
 
