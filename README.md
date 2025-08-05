@@ -194,3 +194,9 @@ User Stories
 	4.1	Access Emergency Contacts
 	
 	As a student, I want quick access to a clearly displayed list of emergency and support contacts (ex: Campus Security, Health Services, Counseling) within a dedicated section, so I can get help when needed.
+
+
+ 	4.2	View Contact Details
+
+	As a student, I want to be able to click on a contact to view their full phone number and any additional relevant details, so I can easily reach out for assistance.
+
