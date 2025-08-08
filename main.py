@@ -1,7 +1,7 @@
 # main.py
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import os
 
 
@@ -9,7 +9,7 @@ class CampusLinkApp(tk.Tk):
 
     """
     The main application class for CampusLink Desktop App.
-    This class sets up the main window, navigation, and integrates
+    This class sets up the login/create account view, main window, navigation, and integrates
     the different feature modules.
     """
 
