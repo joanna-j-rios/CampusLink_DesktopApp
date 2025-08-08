@@ -10,6 +10,8 @@ CampusLink is a desktop application built using Python and Tkinter, designed to 
 
 Key Features
 
+	User Authentication & Account Management: A secure system to create unique accounts, log in, and log out and a space for displaying user information and managing sessions.
+
 	Activities & Task Schedule Manager: A user friendly interface to add, view, and edit a weekly schedule of classes, appointments, and personal tasks.
  
 	Event Calendar: An interactive calendar to view and subscribe to various campus events. Categorized by interest such as academic, sports, and clubs.
@@ -94,8 +96,10 @@ Sprint 2
 	Activities: 
  		Core UI Setup- Implement the main Tkinter application window
 		Navigation- Setup the primary navigation structure to switch between sections
-		Placeholder Sections- Create empty frames/sections for each of the four main features (Activities, Events, Bulletin Board, Emergency Contacts)
-		Initial Wireframes- Finalize basic UI wireframes for the overall app layout
+		Log In/ Create Account: Get the login and account creation flow running.
+		Placeholder Sections: Create empty frames/sections/pages for each of the main features (Activities, Events, Bulletin Board, Emergency Contacts, Account Info. with logout).
+		Initial Wireframes: Finalize basic UI wireframes and prototypes for the overall app layout.
+
 
 Sprint 3
 
@@ -117,6 +121,31 @@ Sprint 4
 
 
 User Stories
+	
+	0	User Authentication & Account Management
+	
+	As a student, I want a secure and personalized experience, so I must first create an account and log in to access my personal data and the app’s features
+	
+	
+	0.1	Create an Account
+	
+	As a new student, I want to create an account by providing a unique username and password, so that I can securely access the CampusLink application for the first time.
+	
+	
+	0.2	Log In to Account
+	
+	As a student, I want to log in to my account with my username and password, so that I can access my personalized schedule, tasks, and campus information.
+	
+	
+	0.3	View Account Details
+	
+	As a student, I want to see my username and account details in an “Account” tab, so that I can verify I am logged in and feel a sense of ownership over my data.
+	
+	
+	0.4	Log Out of Account
+	
+	As a student, I want to log out of my account from the “Account” tab, so that my personal information is protected when I am no longer using the application.
+
 
 	1	Activities/Task Manager	
 	
