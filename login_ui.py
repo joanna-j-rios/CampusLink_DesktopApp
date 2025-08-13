@@ -123,3 +123,4 @@ class LoginUI:
         self.password_entry.delete(0, tk.END) # clears password field
  
 
+
