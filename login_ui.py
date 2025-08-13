@@ -23,6 +23,7 @@ class LoginUI:
             db_manager (DatabaseManager): An instance of the DatabaseManager for authentication.
             show_main_app_callback (function): The method in CampusLinkApp to call on successful login.
         """
+
         self.parent_frame = parent_frame
         self.db_manager = db_manager
         self.show_main_app_callback = show_main_app_callback
@@ -36,6 +37,7 @@ class LoginUI:
         """
         Creates and places all the login and create account widgets.
         """
+
         # --- Top-level frame for login content, centered ---
         main_login_frame = ttk.Frame(self.parent_frame, padding="20")
         main_login_frame.pack(expand=True)
@@ -80,6 +82,7 @@ class LoginUI:
         """
         Handles the login button click.
         """
+
         username = self.username_entry.get()
         password = self.password_entry.get()
         
@@ -106,7 +109,17 @@ class LoginUI:
         # Attempt to add the user to the database
         if self.db_manager.add_user(username, password):
             messagebox.showinfo("Success", f"Account for '{username}' created successfully! You can now log in.")
-        # The add_user method handles errors internally
-    
+            self._clear_entries() # clears entries after successful creation        
+        # note: The add_user method handles errors internally
+
+
+    def _clear_entries(self):
+        
+        """
+        Clears the username and password entry fields.
+        """
+        
+        self.username_entry.delete(0, tk.END) # clears username field
+        self.password_entry.delete(0, tk.END) # clears password field
  
 
