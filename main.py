@@ -9,7 +9,7 @@ import os
 
 from database_manager import DatabaseManager
 from login_ui import LoginUI
-
+from account_ui import AccountUI
 
 
 class CampusLinkApp(tk.Tk):
@@ -72,7 +72,8 @@ class CampusLinkApp(tk.Tk):
         self.app_frame = ttk.Frame(self.main_container)
 
 
-        # Create instance of LoginUI class
+        # Create instance of LoginUI class --> passing ref to call back func (show_...)
+        # note: doesnt call it right away, saves to call later after successful log in        
         self.login_ui = LoginUI(self.login_frame, self.db_manager, self.show_main_app_view)
 
 
@@ -122,8 +123,11 @@ class CampusLinkApp(tk.Tk):
         # Account Info Frame
         self.account_frame = ttk.Frame(self.notebook, padding="10")
         self.notebook.add(self.account_frame, text="Account Info")
-        ttk.Label(self.account_frame, text = "User Account Information (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
+        ##ttk.Label(self.account_frame, text = "User Account Information (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
+        
 
+        # Create instance of AccountUI
+        self.account_ui = None
 
 
 
@@ -144,6 +148,10 @@ class CampusLinkApp(tk.Tk):
         self.app_frame.pack(fill="both", expand=True) # makes the main app frame visible by packing
         messagebox.showinfo("Success", f"Welcome, {username}!")
 
+        # Create AccountUI instance after a successful login
+        # We need the username to be set first before creating this UI.
+        # second callback here! AccountUI will store this ref and call when logout clicked
+        self.account_ui = AccountUI(self.account_frame, self.current_user, self.show_login_view)
 
 
     def show_login_view(self):
@@ -156,8 +164,16 @@ class CampusLinkApp(tk.Tk):
 
         self.is_logged_in = False # resets the applications state after logout
         self.current_user = None # resets user logged in to None
+
+        # Destroy the AccountUI to clear the old username display -> upon logout so app resets ui
+        if self.account_ui:
+            for widget in self.account_frame.winfo_children():
+                widget.destroy()
+            self.account_ui = None
+
         self.app_frame.pack_forget() # hides main applications tabbed interface
         self.login_frame.pack(fill="both", expand=True) # makes login screen visible again
+        self.login_ui._clear_entries() # to clear previous login entries
 
 
 # Entry point guard --> "Is this script currently the main program being run? Yes? Execute." 
