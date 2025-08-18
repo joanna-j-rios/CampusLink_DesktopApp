@@ -10,6 +10,7 @@ import os
 from database_manager import DatabaseManager
 from login_ui import LoginUI
 from account_ui import AccountUI
+from activities_ui import ActivitiesUI
 
 
 class CampusLinkApp(tk.Tk):
@@ -41,6 +42,7 @@ class CampusLinkApp(tk.Tk):
         # initialized to False & None because no one is logged in when the app first starts
         self.is_logged_in = False # boolean that tells is user is logged in
         self.current_user = None # string to hold the username of the person who is logged in
+        self. current_user_id = None # to store the users ID
 
         # Configure the grid to make the notebook expand --> crucial for making UI responsive
         self.grid_rowconfigure(0, weight=1)
@@ -94,7 +96,7 @@ class CampusLinkApp(tk.Tk):
         ##self.activities_frame.grid_columnconfigure(0, weight=1)
         self.notebook.add(self.activities_frame, text="Activities") # adds frame as tab to notebook
         # Add a placeholder label for now -> inside frame
-        ttk.Label(self.activities_frame, text="Activities & Task Schedule Manager (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
+        # ttk.Label(self.activities_frame, text="Activities & Task Schedule Manager (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
 
         # Events Calendar Frame
         self.events_frame = ttk.Frame(self.notebook, padding="10")
@@ -143,6 +145,7 @@ class CampusLinkApp(tk.Tk):
         """
 
         self.current_user = username # stores username so the app can use it later
+        self.current_user_id = self.db_manager.get_user_id(username) # get the user ID
         self.is_logged_in = True # sets boolean to true. i.e. someone is logged in
         self.login_frame.pack_forget() # key line for hiding the login screen
         self.app_frame.pack(fill="both", expand=True) # makes the main app frame visible by packing
@@ -152,6 +155,10 @@ class CampusLinkApp(tk.Tk):
         # We need the username to be set first before creating this UI.
         # second callback here! AccountUI will store this ref and call when logout clicked
         self.account_ui = AccountUI(self.account_frame, self.current_user, self.show_login_view)
+
+        # Initialize the Activities UI and place it in its designated frame
+        ActivitiesUI(self.activities_frame, self.current_user_id)        
+
 
 
     def show_login_view(self):
@@ -164,6 +171,7 @@ class CampusLinkApp(tk.Tk):
 
         self.is_logged_in = False # resets the applications state after logout
         self.current_user = None # resets user logged in to None
+        self.current_user_id = None # clear the user ID
 
         # Destroy the AccountUI to clear the old username display -> upon logout so app resets ui
         if self.account_ui:
@@ -178,7 +186,7 @@ class CampusLinkApp(tk.Tk):
 
 # Entry point guard --> "Is this script currently the main program being run? Yes? Execute." 
 if __name__ == "__main__":
-   # Create an instance of the application
+    # Create an instance of the application
     app = CampusLinkApp()
     # Start the Tkinter event loop
     app.mainloop()
