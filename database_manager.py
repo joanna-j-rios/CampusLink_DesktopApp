@@ -320,3 +320,56 @@ class DatabaseManager:
         except sqlite3.Error as e:
             print(f"Error getting tasks: {e}")
             return []
+
+
+
+
+    def mark_task_complete(self, task_id):
+
+        """
+        Marks a task as completed in the database.
+        
+        Args:
+            task_id (int): The ID of the task to update.
+        """
+
+        if self.conn is None:
+            print("Database connection is not active.")
+            return
+            
+        try:
+            self.cursor.execute(
+                "UPDATE tasks SET is_completed = 1 WHERE id = ?",
+                (task_id,)
+            )
+            self.conn.commit()
+            print(f"Task ID {task_id} marked as complete.")
+        except sqlite3.Error as e:
+            print(f"Error marking task as complete: {e}")
+
+
+
+
+
+    def delete_task(self, task_id):
+
+        """
+        Deletes a task from the database.
+        
+        Args:
+            task_id (int): The ID of the task to delete.
+        """
+
+        if self.conn is None:
+            print("Database connection is not active.")
+            return
+        
+        try:
+            self.cursor.execute(
+                "DELETE FROM tasks WHERE id = ?",
+                (task_id,)
+            )
+            self.conn.commit()
+            print(f"Task ID {task_id} deleted successfully.")
+        except sqlite3.Error as e:
+            print(f"Error deleting task: {e}")

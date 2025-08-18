@@ -64,11 +64,74 @@ class ActivitiesUI:
         
         if tasks:
             for task in tasks:
-                task_label = ttk.Label(self.task_list_frame, text=f"Task: {task['task_name']}, Due: {task['due_date'] if task['due_date'] else 'N/A'}")
-                task_label.pack(anchor="w", padx=10, pady=2)
+                #Create a frame for each task to hold the label and buttons
+                task_container = ttk.Frame(self.task_list_frame)
+                task_container.pack(fill="x", padx=10, pady=5)
+                
+                # Use a style to show completed tasks differently
+                style = ttk.Style()
+                if task['is_completed']:
+                    style.configure("Completed.TLabel", foreground="gray", font=("Arial", 10, "italic"))
+                    # Combined all task info into one label
+                    task_text = f"✓ Task: {task['task_name']} | Due: {task['due_date']} | Description: {task['description']}"
+                    task_label = ttk.Label(task_container, text=task_text, style="Completed.TLabel")
+                else:
+                    # Combined all task info into one label
+                    task_text = f"☐ Task: {task['task_name']} | Due: {task['due_date']} | Description: {task['description']}"
+                    task_label = ttk.Label(task_container, text=task_text, font=("Arial", 10))
+
+
+                task_label.pack(side="left", padx=(0, 10))
+                
+
+                # --- Complete Button ---
+                if not task['is_completed']:
+                    complete_button = ttk.Button(
+                        task_container, 
+                        text="Complete", 
+                        command=lambda task_id=task['id']: self.mark_task_as_complete(task_id)
+                    )
+                    complete_button.pack(side="right")
+
+                # --- Delete Button ---
+                delete_button = ttk.Button(
+                    task_container, 
+                    text="Delete", 
+                    command=lambda task_id=task['id']: self.delete_task(task_id)
+                )
+                delete_button.pack(side="right", padx=(0, 5))
+                
+
         else:
             no_tasks_label = ttk.Label(self.task_list_frame, text="You don't have any tasks yet.")
             no_tasks_label.pack(padx=10, pady=10)
+
+
+
+
+    def mark_task_as_complete(self, task_id):
+
+        """
+        Calls the database manager to mark a task as complete and refreshes the list.
+        """
+
+        self.db_manager.mark_task_complete(task_id)
+        self.refresh_task_list()
+        messagebox.showinfo("Success", "Task marked as complete!")
+
+
+
+
+    def delete_task(self, task_id):
+
+        """
+        Calls the database manager to delete a task and refreshes the list.
+        """
+
+        if messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this task?"):
+            self.db_manager.delete_task(task_id)
+            self.refresh_task_list()
+            messagebox.showinfo("Success", "Task deleted!")
 
 
 
