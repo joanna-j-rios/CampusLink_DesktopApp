@@ -45,21 +45,29 @@ class DatabaseManager:
         This includes a 'users' table for authentication.
         """
         
+        # Check connection to db, if none stop
         if self.conn is None:
             print("Database connection is not active.")
             return
 
+
         try:
+
+            # ----- Table for user authentication ---
+
             # SQL to create the users table
-            # We store a hashed password instead of the plain-text password for security.
+            # We store a hashed password instead of the plain-text password 
+            # for security.
             
-            # 1. creates table named USERS only if doesnt exist already
-            # 2. creates a unique id for each user, which auto increments for every user
-            #    note: serves as "primary key". identifies each row "user"
-            # 3. stores the username as text
+            # 1. creates table named "users" only if doesnt exist already
+            # columns:
+            # 2. id : creates a unique id for each user --> auto increments 
+            # for every user
+            #    note: serves as "primary key". identifies each row (user)
+            # 3. username: stores the username as text
             #    note: NOT NULL means it cant be empty 
             #    note: UNIQUE means no two users can have same username
-            # 4. stores the hased password as text (again, cant be empty)
+            # 4. password_hash: stores the hased password as non empty text
 
 
             self.cursor.execute('''
@@ -69,12 +77,84 @@ class DatabaseManager:
                     password_hash TEXT NOT NULL
                 )
             ''')
+
+
+
+            # --- Table for the user's activities and tasks ---
+            
+            # SQL to crete table for users actvities and tasks
+            # Defining tasks table (linked to the users table via user id)
+
+            # 1. creates table named "tasks" only if it doesnt exist already
+            # columns: 
+            # 2. id: unique identifier for each task ("name" of first column)
+            # 3. user_id: will store the ID of the user who "owns" the task
+            # thus linking this task back to a specific entry in the users table
+            # 4. task_name: will store the title or name of the task
+            #    note: stored as text with rule preventing empty task entry
+            # 5. description: for storing details of task
+            #    note: stored as text but optional (can be left empty)
+            # 6. due_date: for storing the due data of a task
+            # 7. is_completed: track the completion status of the task
+            #    note: 0 - false (not completed)
+            #    note: 1 - true (completed)
+            #    note: every task must have a completion status
+            #    note: each task is auto set to 0 (not completed)
+            # 8. declares user_id as 'FOREIGN_KEY'
+            #    note: links tables
+            #    note: tells db that user_id in this table must coorespond to
+            # existing id in the users table. preventing tasks from being
+            # created by users that dont exist
+
+
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS tasks (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    task_name TEXT NOT NULL,
+                    description TEXT,
+                    due_date TEXT,
+                    is_completed BOOLEAN NOT NULL DEFAULT 0,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                )
+            ''')
+
+
         
             self.conn.commit() # commits changes to table
             print("Tables created successfully.")
         
         except sqlite3.Error as e:
             print(f"Error creating tables: {e}")
+
+
+
+
+    
+    def get_user_id(self, username):
+    
+        """
+        Retrieves the user ID for a given username.
+        
+        Args:
+            username (str): The username to find.
+        
+        Returns:
+            int: The user's ID, or None if the user is not found.
+    
+        """
+
+        if self.conn is None:
+            return None
+        
+        try:
+            self.cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+            result = self.cursor.fetchone()
+            return result[0] if result else None
+
+        except sqlite3.Error as e:
+            print(f"Error getting user ID: {e}")
+            return None
 
 
 
@@ -174,3 +254,69 @@ class DatabaseManager:
             print("Database connection closed.")
 
 
+
+
+    def add_task(self, user_id, task_name, description, due_date):
+
+        """
+        Adds a new task to the tasks table for a specific user.
+        
+        Args:
+            user_id (int): The ID of the user who owns the task.
+            task_name (str): The name of the new task.
+            description (str): A description for the task.
+            due_date (str): The due date of the task (e.g., 'YYYY-MM-DD').
+        """
+
+        if self.conn is None:
+            print("Database connection is not active.")
+            return
+        
+        try:
+            self.cursor.execute(
+                "INSERT INTO tasks (user_id, task_name, description, due_date) VALUES (?, ?, ?, ?)",
+                (user_id, task_name, description, due_date)
+            )
+            self.conn.commit()
+            print(f"Task '{task_name}' added successfully for user ID {user_id}.")
+        except sqlite3.Error as e:
+            print(f"Error adding task: {e}")
+
+
+
+
+    def get_tasks(self, user_id):
+
+        """
+        Retrieves all tasks for a specific user.
+        
+        Args:
+            user_id (int): The ID of the user whose tasks to retrieve.
+            
+        Returns:
+            list: A list of task dictionaries, or an empty list if no tasks are found.
+        """
+
+        if self.conn is None:
+            print("Database connection is not active.")
+            return []
+            
+        try:
+            self.cursor.execute(
+                "SELECT id, task_name, description, due_date, is_completed FROM tasks WHERE user_id = ?",
+                (user_id,)
+            )
+            tasks = []
+            for row in self.cursor.fetchall():
+                task_data = {
+                    "id": row[0],
+                    "task_name": row[1],
+                    "description": row[2],
+                    "due_date": row[3],
+                    "is_completed": bool(row[4])
+                }
+                tasks.append(task_data)
+            return tasks
+        except sqlite3.Error as e:
+            print(f"Error getting tasks: {e}")
+            return []
