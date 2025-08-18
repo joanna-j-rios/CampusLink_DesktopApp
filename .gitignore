@@ -1,3 +1,16 @@
 # Virtual environment
 virt/
 venv/
+
+# Python specific files and folders
+__pycache__/
+*.pyp
+*.pyo
+*.pyd
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
+
+# Database file(s)
+*.db
