@@ -4,6 +4,7 @@
 import sqlite3 # imports library for working with SQLite databases
 import hashlib # Used for securely hashing passwords
 import os
+import datetime # for timestamps on posts
 
 class DatabaseManager:
     """
@@ -120,14 +121,25 @@ class DatabaseManager:
             ''')
 
 
+            
+            # ----- Table for bulletin board posts -----
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS posts (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    title TEXT NOT NULL,
+                    content TEXT NOT NULL,
+                    timestamp TEXT NOT NULL,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                )
+            ''')
         
+
             self.conn.commit() # commits changes to table
             print("Tables created successfully.")
         
         except sqlite3.Error as e:
             print(f"Error creating tables: {e}")
-
-
 
 
     
@@ -157,6 +169,26 @@ class DatabaseManager:
             return None
 
 
+
+    def get_username_by_id(self, user_id):
+        """
+        Retrieves the username for a given user ID.
+        
+        Args:
+            user_id (int): The ID of the user.
+        
+        Returns:
+            str: The username, or None if the ID is not found.
+        """
+        if self.conn is None:
+            return None
+        try:
+            self.cursor.execute("SELECT username FROM users WHERE id = ?", (user_id,))
+            result = self.cursor.fetchone()
+            return result[0] if result else None
+        except sqlite3.Error as e:
+            print(f"Error getting username by ID: {e}")
+            return None
 
 
     def add_user(self, username, password):
@@ -349,8 +381,6 @@ class DatabaseManager:
 
 
 
-
-
     def delete_task(self, task_id):
 
         """
@@ -373,3 +403,78 @@ class DatabaseManager:
             print(f"Task ID {task_id} deleted successfully.")
         except sqlite3.Error as e:
             print(f"Error deleting task: {e}")
+
+
+
+    def add_post(self, user_id, title, content):
+        
+        """
+        Adds a new post to the posts table.
+        """
+        
+        if self.conn is None:
+            print("Database connection is not active.")
+            return
+        try:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.cursor.execute(
+                "INSERT INTO posts (user_id, title, content, timestamp) VALUES (?, ?, ?, ?)",
+                (user_id, title, content, timestamp)
+            )
+            self.conn.commit()
+            print(f"Post '{title}' added successfully for user ID {user_id}.")
+        except sqlite3.Error as e:
+            print(f"Error adding post: {e}")
+
+
+
+    def get_posts(self):
+        
+        """
+        Retrieves all posts from the database, sorted by timestamp.
+        
+        Returns:
+            list: A list of post dictionaries, or an empty list.
+        """
+        
+        if self.conn is None:
+            print("Database connection is not active.")
+            return []
+        try:
+            self.cursor.execute("SELECT id, user_id, title, content, timestamp FROM posts ORDER BY timestamp DESC")
+            posts = []
+            for row in self.cursor.fetchall():
+                post_data = {
+                    "id": row[0],
+                    "user_id": row[1],
+                    "title": row[2],
+                    "content": row[3],
+                    "timestamp": row[4]
+                }
+                posts.append(post_data)
+            return posts
+        except sqlite3.Error as e:
+            print(f"Error getting posts: {e}")
+            return []
+
+
+
+    def delete_post(self, post_id):
+       
+        """
+        Deletes a post from the database.
+        """
+       
+        if self.conn is None:
+            print("Database connection is not active.")
+            return
+        try:
+            self.cursor.execute(
+                "DELETE FROM posts WHERE id = ?",
+                (post_id,)
+            )
+            self.conn.commit()
+            print(f"Post ID {post_id} deleted successfully.")
+        except sqlite3.Error as e:
+            print(f"Error deleting post: {e}")
+
