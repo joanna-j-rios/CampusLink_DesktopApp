@@ -1,4 +1,4 @@
-# File: CampusLink_DesktopApp/activities_ui.py
+# activities_ui.py
 
 import tkinter as tk
 from tkinter import ttk, messagebox
