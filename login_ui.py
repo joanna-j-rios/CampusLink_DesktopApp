@@ -86,13 +86,45 @@ class LoginUI:
         username = self.username_entry.get()
         password = self.password_entry.get()
         
+        """
         if self.db_manager.check_user(username, password):
             # If successful, call the callback to switch to the main app view
             self.show_main_app_callback(username)
         else:
             messagebox.showerror("Login Failed", "Invalid username or password.")
+        """
 
+        """
+        Changes following...
+        Handles the login process.
+        
+        This method now uses an if/elif/else block to handle the more
+        specific return values from the database manager.
+        """
+        if not username or not password:
+            messagebox.showwarning("Input Error", "Username and password cannot be empty.")
+            return
 
+        # Use the updated check_user method that returns a specific status string
+        login_status = self.db_manager.check_user(username, password)
+        
+        # --- START OF HIGHLIGHTED CHANGE ---
+        # The logic is now a decision tree based on the status string.
+        if login_status == "success":
+            # Correct username and password, so proceed with login.
+            self.show_main_app_callback(username)
+            self._clear_entries()
+        elif login_status == "user_not_found":
+            # User does not exist, show the specific message.
+            messagebox.showwarning("Login Failed", "User does not exist. Please create an account by clicking 'Create Account'.")
+        elif login_status == "incorrect_password":
+            # User exists, but password is wrong.
+            messagebox.showerror("Login Failed", "Incorrect password.")
+        else:
+            # An unexpected error occurred.
+            messagebox.showerror("Error", "An unexpected error occurred.")
+
+            
             
     def _handle_create_account(self):
 
