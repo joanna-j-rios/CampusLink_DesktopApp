@@ -181,6 +181,12 @@ class CampusLinkApp(tk.Tk):
         self.current_user = None # resets user logged in to None
         self.current_user_id = None # clear the user ID
 
+        # Destroy the ActivitiesUI to clear tasks from the previous user --> added this to fix bug
+        # without this tasks of another user1 will be visible to user 2 --> ...for example
+        self.activities_frame.pack_forget()
+        for widget in self.activities_frame.winfo_children():
+            widget.destroy()
+
         # Destroy the AccountUI to clear the old username display -> upon logout so app resets ui
         if self.account_ui:
             for widget in self.account_frame.winfo_children():
