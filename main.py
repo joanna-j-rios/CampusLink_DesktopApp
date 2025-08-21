@@ -12,6 +12,7 @@ from login_ui import LoginUI
 from account_ui import AccountUI
 from activities_ui import ActivitiesUI
 from bulletin_ui import BulletinUI
+from emergency_contacts_ui import EmergencyContactsUI
 
 
 class CampusLinkApp(tk.Tk):
@@ -121,7 +122,7 @@ class CampusLinkApp(tk.Tk):
         ##self.emergency_frame.grid_columnconfigure(0, weight=1)
         self.notebook.add(self.emergency_frame, text="Emergency Contacts")
         # Add a placeholder label for now
-        ttk.Label(self.emergency_frame, text="Emergency Contacts & Quick Access (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
+        #ttk.Label(self.emergency_frame, text="Emergency Contacts & Quick Access (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
 
         # Account Info Frame
         self.account_frame = ttk.Frame(self.notebook, padding="10")
@@ -133,6 +134,8 @@ class CampusLinkApp(tk.Tk):
         self.account_ui = None
         # Create instance of BulletinUI
         self.bulletin_ui = None
+        # Create instance of EmergencyUI
+        self.emergency_contacts_ui = EmergencyContactsUI(self.emergency_frame)
 
 
     # Create Methods to switch between views
