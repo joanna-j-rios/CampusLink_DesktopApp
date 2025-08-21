@@ -38,11 +38,37 @@ class AccountUI:
         Creates and places all the widgets for the Account tab.
         """
 
+        # Header
+        header = ttk.Label(self.parent_frame, text="Account Information", font=("Arial", 18, "bold"))
+        header.pack(pady=10)
+
         # Top-level frame for centered content
         content_frame = ttk.Frame(self.parent_frame, padding="20") # frame is created to
                                                                    # contain all widgets
-        content_frame.pack(expand=True) # packed to keep contents centered in the tab
+        content_frame.pack(fill="both", expand=True) # packed to keep contents centered in the tab
 
+
+        # --- User Profile Section ---
+        profile_header = ttk.Label(content_frame, text="Your Profile", font=("Arial", 14, "bold"))
+        profile_header.pack(pady=(0, 10))
+
+        # Username Label
+        username_label = ttk.Label(content_frame, text=f"Username: {self.current_user}", font=("Arial", 12))
+        username_label.pack(anchor="w", pady=5)
+
+        # Other placeholder info (can be connected to a database later)
+        placeholder_email = ttk.Label(content_frame, text=f"Email: {self.current_user}@campuslink.edu", font=("Arial", 10, "italic"))
+        placeholder_email.pack(anchor="w")
+
+        placeholder_id = ttk.Label(content_frame, text="Student ID: 123456", font=("Arial", 10, "italic"))
+        placeholder_id.pack(anchor="w")
+
+        # Separator line --> so there is seperation between account info and logout option
+        separator = ttk.Separator(content_frame, orient="horizontal")
+        separator.pack(fill="x", pady=20)
+
+
+        """
         # Create welcome message label --> f string to dynamically insert username 
         welcome_label = ttk.Label(
             content_frame, 
@@ -60,7 +86,8 @@ class AccountUI:
         )
 
         info_label.pack(pady=5)
-
+        """
+        
         # Logout button
         logout_button = ttk.Button(
             content_frame, 

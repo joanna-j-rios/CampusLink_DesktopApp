@@ -100,13 +100,13 @@ class CampusLinkApp(tk.Tk):
         # Add a placeholder label for now -> inside frame
         # ttk.Label(self.activities_frame, text="Activities & Task Schedule Manager (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
 
-        # Events Calendar Frame
-        self.events_frame = ttk.Frame(self.notebook, padding="10")
+        # Events Calendar Frame -> removing events frame -> modified proj to meet deadline
+        #self.events_frame = ttk.Frame(self.notebook, padding="10")
         ##self.events_frame.grid_rowconfigure(0, weight=1)
         ##self.events_frame.grid_columnconfigure(0, weight=1)
-        self.notebook.add(self.events_frame, text="Events")
+        #self.notebook.add(self.events_frame, text="Events")
         # Add a placeholder label for now
-        ttk.Label(self.events_frame, text="Events Calendar (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
+        #ttk.Label(self.events_frame, text="Events Calendar (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
 
         # Bulletin Board Frame
         self.bulletin_frame = ttk.Frame(self.notebook, padding="10")
