@@ -11,6 +11,7 @@ from database_manager import DatabaseManager
 from login_ui import LoginUI
 from account_ui import AccountUI
 from activities_ui import ActivitiesUI
+from bulletin_ui import BulletinUI
 
 
 class CampusLinkApp(tk.Tk):
@@ -112,7 +113,7 @@ class CampusLinkApp(tk.Tk):
         ##self.bulletin_frame.grid_columnconfigure(0, weight=1)
         self.notebook.add(self.bulletin_frame, text="Bulletin Board")
         # Add a placeholder label for now
-        ttk.Label(self.bulletin_frame, text="Community Bulletin Board (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
+        #ttk.Label(self.bulletin_frame, text="Community Bulletin Board (Coming Soon!)", font=("Arial", 14)).pack(pady=50)
 
         # Emergency Contacts Frame
         self.emergency_frame = ttk.Frame(self.notebook, padding="10")
@@ -130,7 +131,8 @@ class CampusLinkApp(tk.Tk):
 
         # Create instance of AccountUI
         self.account_ui = None
-
+        # Create instance of BulletinUI
+        self.bulletin_ui = None
 
 
     # Create Methods to switch between views
@@ -157,7 +159,10 @@ class CampusLinkApp(tk.Tk):
         self.account_ui = AccountUI(self.account_frame, self.current_user, self.show_login_view)
 
         # Initialize the Activities UI and place it in its designated frame
-        ActivitiesUI(self.activities_frame, self.current_user_id)        
+        ActivitiesUI(self.activities_frame, self.current_user_id)   
+
+        # Initialize the BulletinUI and place it in its designated frame
+        self.bulletin_ui = BulletinUI(self.bulletin_frame, self.db_manager, self.current_user_id)     
 
 
 
@@ -178,6 +183,12 @@ class CampusLinkApp(tk.Tk):
             for widget in self.account_frame.winfo_children():
                 widget.destroy()
             self.account_ui = None
+
+        # Destroy the BulletinUI to clear the old posts display
+        if self.bulletin_ui:
+            for widget in self.bulletin_frame.winfo_children():
+                widget.destroy()
+            self.bulletin_ui = None
 
         self.app_frame.pack_forget() # hides main applications tabbed interface
         self.login_frame.pack(fill="both", expand=True) # makes login screen visible again
