@@ -40,7 +40,7 @@ class EmergencyContactsUI:
         emergency_label.pack(anchor="w", pady=(10, 5))
 
         # Example Contact 1
-        police_label = ttk.Label(content_frame, text="University Police: (956)882-4911)", font=("Arial", 10))
+        police_label = ttk.Label(content_frame, text="University Police: (956)882-4911", font=("Arial", 10))
         police_label.pack(anchor="w")
 
         # Example Contact 2
