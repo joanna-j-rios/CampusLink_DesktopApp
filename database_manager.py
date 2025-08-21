@@ -261,11 +261,25 @@ class DatabaseManager:
             # note: result will return either return tuple i.e. user found or false i.e not found
             #       result[0] gets actual hash string from tuple            
 
+            """
             # Check if a user was found and if the password hashes match
             if result and result[0] == password_hash:
                 return True
             else:
                 return False
+            """
+            
+            if not result:
+                # This means the query returned no rows, so the user doesn't exist.
+                return "user_not_found"
+            
+            if result[0] == password_hash:
+                # The password hash matches the one in the database.
+                return "success"
+            else:
+                # The user exists, but the password hashes don't match.
+                return "incorrect_password"
+
         
         except sqlite3.Error as e:
             print(f"Error checking user credentials: {e}")
