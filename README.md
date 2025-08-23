@@ -21,7 +21,7 @@ Key Features
 
 Development Methodology
 
-This project is being developed using an agile methodology with an emphasis on iterative development, continuous feedback, testing, and collaboration through version control.
+This project is being developed using an agile methodology with an emphasis on iterative development, continuous feedback, testing, and collaboration through version control. Useid Tkinter and sqlite3 database.
 
 
 Basic Usage Instructions
@@ -95,7 +95,7 @@ Sprint 2
  		Core UI Setup- Implement the main Tkinter application window
 		Navigation- Setup the primary navigation structure to switch between sections
 		Log In/ Create Account: Get the login and account creation flow running.
-		Placeholder Sections: Create empty frames/sections/pages for each of the main features (Activities, Events, Bulletin Board, Emergency Contacts, Account Info. with logout).
+		Placeholder Sections: Create empty frames/sections/pages for each of the main features (Activities, Bulletin Board, Emergency Contacts, Account Info. with logout).
 		Initial Wireframes: Finalize basic UI wireframes and prototypes for the overall app layout.
 
 
